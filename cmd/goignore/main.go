@@ -5,6 +5,7 @@ import (
 	"embed"
 	"errors"
 	"fmt"
+	"goignore/cmd/utils"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -28,8 +29,9 @@ var language string
 var autoDetect bool
 
 var rootCmd = &cobra.Command{
-	Use:   "goignore",
-	Short: "A lightweight CLI tool for generating .gitignore files",
+	Use:     "goignore",
+	Short:   "A lightweight CLI tool for generating .gitignore files",
+	Version: utils.CLI_VERSION,
 }
 
 var newCmd = &cobra.Command{
@@ -133,12 +135,16 @@ func getSupportedLanguages() []string {
 	}
 	return result
 }
+
 func init() {
 	rootCmd.AddCommand(newCmd)
 	rootCmd.AddCommand(listCmd)
 
 	// Define the 'language' and 'auto-detect' flags for the newCmd
 	newCmd.Flags().StringVarP(&language, "language", "l", "", "Programming language for .gitignore file")
+	rootCmd.PersistentPreRun = func(cmd *cobra.Command, args []string) {
+		utils.CheckForUpdate()
+	}
 }
 
 func main() {

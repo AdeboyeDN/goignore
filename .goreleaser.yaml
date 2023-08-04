@@ -13,8 +13,8 @@ builds:
       - arm64
     flags:
       - -mod=vendor
-    #ldflags:
-      #- -s -w -X goignore/cmd/utils.CLI_VERSION={{.Version}}
+    ldflags:
+      - -s -w -X goignore/cmd/utils.CLI_VERSION={{.Version}}
 
 release:
   prerelease: auto
